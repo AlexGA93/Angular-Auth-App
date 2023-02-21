@@ -1,0 +1,63 @@
+<div class="page">
+    <div class="form-container">
+        <h1 class="m-3">Login</h1>
+        <form class="form-container-form" 
+            autocomplete="off"
+            [formGroup]="myForm"
+            (ngSubmit)="login()"
+        >
+            
+
+            <div class="form-container-form-email my-2">
+                <input class="input100"
+                    type="email" 
+                    formControlName="email"
+                    placeholder="Email...">
+            </div>
+            <span 
+                class="text-danger my-2"
+                *ngIf="fieldValidation('email')"
+            >
+            {{ emailErrorMessage }}
+            </span>
+
+            <div class="form-container-form-pass  my-2">
+                <input class="input100"
+                    type="password" 
+                    formControlName="password"
+                    placeholder="Password...">
+            </div>
+            <span 
+                class="text-danger my-2"
+                *ngIf="fieldValidation('password')"
+            >Provide a 6 characters password or longer</span>
+    
+            <div class="form-container-form-button">
+                <button class="btn btn-primary" type="submit" [disabled]="myForm.invalid">Login</button> 
+                <button class="btn btn-secondary mx-2" type="button" (click)="showDebugging()">Display Debugging</button> 
+            </div>
+            
+    
+            <span class="txt1 p-b-17">
+                Not an account? <a routerLink="/auth/register" class="txt2">Create an account here...</a>
+            </span>
+
+            
+    
+        </form>
+    </div>
+</div>
+<div class="debugging" *ngIf="displayDebugging">
+    <!-- Valid form -->
+   <h2>Valid Form: {{ myForm.valid }}</h2>
+
+   <!-- State -->
+   <h2>Form state: {{ myForm.status }}</h2>
+   
+   <!-- Required -->
+   <h2>Input name: {{ myForm.controls['name'].errors | json}}</h2>
+   <h2>Input email: {{ myForm.controls['email'].errors | json}}</h2>
+   <h2>Input pass: {{ myForm.controls['password'].errors | json}}</h2>
+   <!-- pass matches validation -->
+   <h2>Input pass2: {{ myForm.controls['password2'].errors | json}}</h2>
+</div>

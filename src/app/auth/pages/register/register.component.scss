@@ -1,0 +1,21 @@
+@use '../../../../assets/scss/modules';
+@import '../../../../assets/scss/index.scss';
+
+.form-container{
+    &-form{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        input{
+            width: 100%;
+        }
+        &-button{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    }
+}
