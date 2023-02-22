@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../../services/authentication.service';
 import { ValidationsService } from '../../services/validations.service';
 
 @Component({
@@ -16,14 +18,16 @@ export class RegisterComponent implements OnInit {
     password2 : ['',[Validators.required, Validators.minLength(6)]]
   },
   {
-    validators: [this.validations.passMatches('password', 'password2')],
+    validators: [this._validations.passMatches('password', 'password2')],
   });
 
   displayDebugging: boolean = false;
 
   constructor(
     private _fb: FormBuilder,
-    private validations: ValidationsService
+    private _as: AuthenticationService,
+    private _router: Router,
+    private _validations: ValidationsService
   ){}
 
   ngOnInit(): void {
@@ -53,7 +57,21 @@ export class RegisterComponent implements OnInit {
 
   // methods
   register(){
-    console.log(this.myForm.value);
+    const { name, email, password, password2 } = this.myForm.value;
+    // send payload to authentication server and wait to redirect
+    this._as
+        .register({ name, email, password, password2 })
+        .subscribe(ok_status => {
+          if(ok_status){
+            // redirect to dashboard
+            this._router.navigateByUrl('/dashboard');
+          }else{
+            // reset form and alert
+            this.myForm.reset();
+
+            alert('Incorrect credentials!');
+          }
+        })
     
   }
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,11 @@ export class LoginComponent implements OnInit {
 
   displayDebugging: boolean = false;
 
-  constructor(private _fb: FormBuilder){}
+  constructor(
+    private _fb: FormBuilder,
+    private _as: AuthenticationService,
+    private _router: Router
+  ){}
 
   ngOnInit(): void {
     
@@ -45,7 +50,22 @@ export class LoginComponent implements OnInit {
 
   // methods
   login(){
-    console.log(this.myForm.value);
+    const { email, password } = this.myForm.value;
+    // send payload to authentication server and wait to redirect
+    this._as
+        .login({ email, password })
+        .subscribe(ok_status => {
+          if(ok_status) {
+            // redirect to dashboard
+            this._router.navigateByUrl('/dashboard');
+
+          }else{
+            // reset form and alert
+            this.myForm.reset();
+
+            alert('Incorrect credentials!');
+          }
+        })
     
   }
 

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ValidTokenGuard } from './guards/valid-token.guard';
 
 const routes: Routes = [
   // implementing lazy load
@@ -10,7 +11,9 @@ const routes: Routes = [
   // protected routes with guards
   {
     path: 'dashboard',
-    loadChildren: () => import('./protected/protected.module').then(module => module.ProtectedModule)
+    loadChildren: () => import('./protected/protected.module').then(module => module.ProtectedModule),
+    // GUARDS IMPLEMENTATION TO PROTECT ROUTE
+    canActivate: [ValidTokenGuard]
   },
 
   // default routes
